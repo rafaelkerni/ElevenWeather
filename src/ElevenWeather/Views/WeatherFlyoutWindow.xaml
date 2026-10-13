@@ -1,0 +1,331 @@
+<Window x:Class="ElevenWeather.Views.WeatherFlyoutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:ElevenWeather.Converters"
+        xmlns:loc="clr-namespace:ElevenWeather.Models"
+        Title="Clima"
+        Width="360" SizeToContent="Height"
+        Left="-10000" Top="-10000"
+        WindowStartupLocation="Manual"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        TextOptions.TextRenderingMode="Grayscale"
+        TextOptions.TextFormattingMode="Ideal"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        Deactivated="OnDeactivated"
+        KeyDown="OnKeyDown">
+
+    <Window.Resources>
+        <conv:IconKeyToImageSourceConverter x:Key="IconKeyConverter"/>
+        <conv:EmptyStringToVisibilityConverter x:Key="EmptyToVis"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <Style x:Key="FlyoutIconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg" Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource FlyoutButtonHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FlyoutFullButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource FlyoutButtonBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource FlyoutButtonHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CityResultStyle" TargetType="TextBlock">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="TabButtonBaseStyle" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HourlyTabButtonStyle" TargetType="Button" BasedOn="{StaticResource TabButtonBaseStyle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsHourlyTabActive}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource FlyoutButtonBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DailyTabButtonStyle" TargetType="Button" BasedOn="{StaticResource TabButtonBaseStyle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDailyTabActive}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource FlyoutButtonBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ScrollArrowButtonStyle" TargetType="Button" BasedOn="{StaticResource FlyoutIconButtonStyle}">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="8"
+            Background="{DynamicResource FlyoutCardBrush}"
+            BorderBrush="{DynamicResource FlyoutBorderBrush}"
+            BorderThickness="1"
+            Padding="16">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="28" ShadowDepth="6" Direction="270" Opacity="0.32" Color="Black"/>
+        </Border.Effect>
+
+        <StackPanel>
+
+            <!-- Header: house + city + chevron | menu ... -->
+            <Grid Margin="0,0,0,14">
+                <StackPanel Orientation="Horizontal" Cursor="Hand"
+                            MouseLeftButtonUp="OnCityHeaderClick">
+                    <TextBlock Text="&#xE80F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                               Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding CityName}" Margin="8,0,0,0" FontSize="14"
+                               FontFamily="Segoe UI Variable Text, Segoe UI"
+                               Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="&#xE70D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="9"
+                               Margin="6,2,0,0" Foreground="{DynamicResource FlyoutChevronBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <Button x:Name="MenuButton" Content="&#xE712;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                        HorizontalAlignment="Right" Style="{StaticResource FlyoutIconButtonStyle}"
+                        Click="OnMenuButtonClick"
+                        ToolTip="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.moreOptions]}"
+                        AutomationProperties.Name="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.moreOptions]}">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.refresh]}"
+                                      Command="{Binding RefreshCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.startWithWindows]}"
+                                      IsCheckable="True" IsChecked="{Binding AutoStartEnabled}"/>
+                            <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.language]}">
+                                <MenuItem Header="English" IsCheckable="True" IsChecked="{Binding IsEnglish}"/>
+                                <MenuItem Header="Português" IsCheckable="True" IsChecked="{Binding IsPortuguese}"/>
+                                <MenuItem Header="Español" IsCheckable="True" IsChecked="{Binding IsSpanish}"/>
+                            </MenuItem>
+                            <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.temperatureUnit]}">
+                                <MenuItem Header="Celsius (°C)" IsCheckable="True" IsChecked="{Binding IsCelsius}"/>
+                                <MenuItem Header="Fahrenheit (°F)" IsCheckable="True" IsChecked="{Binding IsFahrenheit}"/>
+                            </MenuItem>
+                            <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.timeFormat]}">
+                                <MenuItem Header="24h" IsCheckable="True" IsChecked="{Binding IsTimeFormat24}"/>
+                                <MenuItem Header="12h (AM/PM)" IsCheckable="True" IsChecked="{Binding IsTimeFormat12}"/>
+                            </MenuItem>
+                            <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.iconSet]}">
+                                <MenuItem Header="Meteocons" IsCheckable="True" IsChecked="{Binding IsMeteoconsIconSet}"/>
+                                <MenuItem Header="Fluent Emoji (Flat)" IsCheckable="True" IsChecked="{Binding IsFluentEmojiIconSet}"/>
+                                <MenuItem Header="MSN / Bing Weather" IsCheckable="True" IsChecked="{Binding IsMsnIconSet}"
+                                          ToolTip="{Binding MsnIconSetTooltip}"/>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.exit]}"
+                                      Command="{Binding ExitCommand}"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+            </Grid>
+
+            <!-- Location switch panel -->
+            <Border Visibility="{Binding IsLocationPanelOpen, Converter={StaticResource BoolToVis}}" Margin="0,0,0,14">
+                <StackPanel>
+                    <Grid>
+                        <TextBox x:Name="CitySearchBox"
+                                 Text="{Binding CitySearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                 KeyDown="OnCitySearchKeyDown"
+                                 Padding="8,6" FontSize="12"
+                                 Background="{DynamicResource FlyoutButtonBrush}"
+                                 Foreground="{DynamicResource TextPrimaryBrush}"
+                                 BorderThickness="0"/>
+                        <TextBlock Text="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.searchCity]}"
+                                   IsHitTestVisible="False"
+                                   Margin="9,0,0,0" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   Visibility="{Binding CitySearchQuery, Converter={StaticResource EmptyToVis}}"/>
+                    </Grid>
+                    <TextBlock Text="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.searching]}"
+                               FontSize="11" Margin="4,8,0,0"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Visibility="{Binding IsSearchingCity, Converter={StaticResource BoolToVis}}"/>
+                    <TextBlock Text="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.noCityFound]}"
+                               FontSize="11" Margin="4,8,0,0"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Visibility="{Binding HasNoCityResults, Converter={StaticResource BoolToVis}}"/>
+                    <ItemsControl ItemsSource="{Binding CitySearchResults}" Margin="0,4,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"
+                                           Style="{StaticResource CityResultStyle}"
+                                           MouseLeftButtonUp="OnCityResultClick"
+                                           Tag="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Body: icon + temperature | air quality -->
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
+                    <Image Source="{Binding IconKey, Converter={StaticResource IconKeyConverter}}" Width="48" Height="48"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock Text="{Binding TemperatureText}"
+                               FontFamily="Segoe UI Variable Display, Segoe UI"
+                               FontSize="36" FontWeight="SemiBold"
+                               Margin="10,0,0,0"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" Cursor="Hand"
+                            MouseLeftButtonUp="OnAirQualityClick"
+                            Visibility="{Binding HasAqi, Converter={StaticResource BoolToVis}}">
+                    <Border Width="3" CornerRadius="1.5" Margin="0,2,8,2"
+                            Background="{DynamicResource TextSecondaryBrush}"/>
+                    <StackPanel MaxWidth="90">
+                        <TextBlock Text="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.airQuality]}"
+                                   FontSize="11" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding AqiCategoryText}" FontSize="12" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Text="&#xE76C;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="8"
+                                       Margin="4,3,0,0" Foreground="{DynamicResource FlyoutChevronBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- Tabs: hourly | daily -->
+            <Border Background="{DynamicResource FlyoutButtonBrush}" CornerRadius="6" Margin="0,0,0,10">
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.hourly]}"
+                            Style="{StaticResource HourlyTabButtonStyle}" Click="OnHourlyTabClick"/>
+                    <Button Grid.Column="1" Content="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.daily]}"
+                            Style="{StaticResource DailyTabButtonStyle}" Click="OnDailyTabClick"/>
+                </Grid>
+            </Border>
+
+            <!-- Horizontal forecast list (hourly or daily, depending on the tab) -->
+            <Grid Margin="0,0,0,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="&#xE76B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                        Style="{StaticResource ScrollArrowButtonStyle}" Click="OnScrollLeftClick"
+                        IsEnabled="{Binding CanGoToPreviousPage}"
+                        ToolTip="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.previousPage]}"
+                        AutomationProperties.Name="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.previousPage]}"/>
+
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding VisiblePageRows}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1" Columns="5"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="2,0">
+                                <TextBlock Text="{Binding TopLabel}" FontSize="11" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <Image Source="{Binding IconKey, Converter={StaticResource IconKeyConverter}}"
+                                       Width="26" Height="26" Margin="0,4"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <TextBlock Text="{Binding PrimaryText}" FontSize="13" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="{Binding SecondaryText}" FontSize="11" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Button Grid.Column="2" Content="&#xE76C;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                        Style="{StaticResource ScrollArrowButtonStyle}" Click="OnScrollRightClick"
+                        IsEnabled="{Binding CanGoToNextPage}"
+                        ToolTip="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.nextPage]}"
+                        AutomationProperties.Name="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.nextPage]}"/>
+            </Grid>
+
+            <!-- Footer -->
+            <Button Content="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[ui.viewFullForecast]}"
+                    Command="{Binding OpenForecastCommand}"
+                    Style="{StaticResource FlyoutFullButtonStyle}"
+                    HorizontalAlignment="Stretch"/>
+
+        </StackPanel>
+    </Border>
+</Window>

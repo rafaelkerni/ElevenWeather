@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- WinUI 3 dark theme tokens (Common_themeresources_any.xaml), used by the taskbar itself. -->
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#C5FFFFFF"/>
+
+    <SolidColorBrush x:Key="PillRestBrush" Color="#00FFFFFF"/>
+    <SolidColorBrush x:Key="PillHoverBrush" Color="#0FFFFFFF"/>
+    <SolidColorBrush x:Key="PillPressedBrush" Color="#0AFFFFFF"/>
+
+    <SolidColorBrush x:Key="FlyoutBorderBrush" Color="#17FFFFFF"/>
+    <SolidColorBrush x:Key="FlyoutCardBrush" Color="#40000000"/>
+    <SolidColorBrush x:Key="FlyoutButtonBrush" Color="#12FFFFFF"/>
+    <SolidColorBrush x:Key="FlyoutButtonHoverBrush" Color="#1FFFFFFF"/>
+    <SolidColorBrush x:Key="FlyoutChevronBrush" Color="#99FFFFFF"/>
+
+    <!-- Base color for the acrylic (SetWindowCompositionAttribute); opacity is fixed in the code-behind. -->
+    <Color x:Key="AcrylicTintColor">#2C2C2E</Color>
+
+</ResourceDictionary>

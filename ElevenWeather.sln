@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1D72F454-C2BF-4B83-9AB6-A7B55F37A49B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElevenWeather", "src\ElevenWeather\ElevenWeather.csproj", "{98305B0C-B0F0-49C9-8FF4-324F23D3C314}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AF9BA48B-5525-4EF2-B4E0-8F2EA5BE676D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElevenWeather.Tests", "tests\ElevenWeather.Tests\ElevenWeather.Tests.csproj", "{11F600FE-FE64-4E0A-960D-EA8515F93B4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98305B0C-B0F0-49C9-8FF4-324F23D3C314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98305B0C-B0F0-49C9-8FF4-324F23D3C314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98305B0C-B0F0-49C9-8FF4-324F23D3C314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98305B0C-B0F0-49C9-8FF4-324F23D3C314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11F600FE-FE64-4E0A-960D-EA8515F93B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11F600FE-FE64-4E0A-960D-EA8515F93B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11F600FE-FE64-4E0A-960D-EA8515F93B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11F600FE-FE64-4E0A-960D-EA8515F93B4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{98305B0C-B0F0-49C9-8FF4-324F23D3C314} = {1D72F454-C2BF-4B83-9AB6-A7B55F37A49B}
+		{11F600FE-FE64-4E0A-960D-EA8515F93B4A} = {AF9BA48B-5525-4EF2-B4E0-8F2EA5BE676D}
+	EndGlobalSection
+EndGlobal

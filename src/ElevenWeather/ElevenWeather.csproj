@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>ElevenWeather</RootNamespace>
+    <AssemblyName>ElevenWeather</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <!-- CA1416: the whole app is Windows-only (net8.0-windows); WFAC010: DPI is already handled via app.manifest (PerMonitorV2), as is proper for WPF apps. -->
+    <NoWarn>$(NoWarn);CA1416;WFAC010</NoWarn>
+    <!-- Um único framework alvo: a subpasta net8.0-windows em bin/ seria redundante -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <Version>0.1.0</Version>
+    <Product>ElevenWeather</Product>
+    <Company>Rafael Kerni</Company>
+    <Description>A lightweight, native-looking weather indicator for the Windows 11 taskbar.</Description>
+    <Copyright>Copyright (c) 2026 Rafael Kerni</Copyright>
+    <RepositoryUrl>https://github.com/rafaelkerni/ElevenWeather</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\**\*.png" />
+    <!-- Ícones MSN são da Microsoft: nunca embutidos, copiados em runtime do app Bing Weather -->
+    <Resource Remove="Resources\Icons\Msn\**" />
+  </ItemGroup>
+
+</Project>
