@@ -81,13 +81,11 @@ Weather is glanceable information: you look at the taskbar, you see the temperat
 
 ## 🚀 Installation
 
-No installer or published release yet — see [Building from source](#-building-from-source) below.
-
-Once a release is published, the steps will be:
-
-1. Download the latest release from the repository's Releases page.
-2. Extract it and run `ElevenWeather.exe`.
+1. Download the latest `ElevenWeather-vX.Y.Z-win-x64.zip` from the [Releases page](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
+2. Extract it and run `ElevenWeather.exe` — it's a single self-contained file, no .NET install needed.
 3. On first run, your location is detected automatically; you can change it any time from the flyout's menu.
+
+Prefer to build it yourself? See [Building from source](#-building-from-source) below.
 
 ElevenWeather targets **Windows 11**.
 
@@ -200,7 +198,7 @@ dotnet test
 To produce a single self-contained `.exe` (no .NET runtime install required on the target machine):
 
 ```bash
-dotnet publish src/ElevenWeather -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
+dotnet publish src/ElevenWeather -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=None
 ```
 
 The output lands in `src/ElevenWeather/bin/Release/win-x64/publish/`.

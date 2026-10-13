@@ -81,13 +81,11 @@ Clima é uma informação de relance: você olha para a barra de tarefas, vê a 
 
 ## 🚀 Instalação
 
-Ainda não há instalador ou release publicado — veja [Compilando a partir do código-fonte](#-compilando-a-partir-do-código-fonte) abaixo.
-
-Assim que uma release for publicada, os passos serão:
-
-1. Baixe a versão mais recente na página de Releases do repositório.
-2. Extraia os arquivos e execute `ElevenWeather.exe`.
+1. Baixe o `ElevenWeather-vX.Y.Z-win-x64.zip` mais recente na [página de Releases](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
+2. Extraia o arquivo e execute `ElevenWeather.exe` — é um único arquivo autocontido, sem precisar instalar o .NET.
 3. Na primeira execução, sua localização é detectada automaticamente; você pode alterá-la a qualquer momento pelo menu do flyout.
+
+Prefere compilar você mesmo? Veja [Compilando a partir do código-fonte](#-compilando-a-partir-do-código-fonte) abaixo.
 
 O ElevenWeather é voltado para o **Windows 11**.
 
@@ -200,7 +198,7 @@ dotnet test
 Para gerar um único `.exe` autocontido (sem necessidade de instalar o runtime do .NET na máquina de destino):
 
 ```bash
-dotnet publish src/ElevenWeather -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
+dotnet publish src/ElevenWeather -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=None
 ```
 
 O resultado fica em `src/ElevenWeather/bin/Release/win-x64/publish/`.
