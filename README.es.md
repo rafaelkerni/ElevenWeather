@@ -1,14 +1,12 @@
 <div align="center">
 
-# ElevenWeather
-
-### Sin noticias. Sin feeds. Sin distracciones. Solo el clima.
+# ⛅ ElevenWeather
 
 Un indicador de clima ligero y de aspecto nativo para la barra de tareas de Windows 11.
 
 <br>
 
-![ElevenWeather en la barra de tareas](assets/taskbar.png)
+![ElevenWeather — Sin distracciones. Solo el clima.](assets/banner-es.webp)
 
 <br>
 
@@ -28,8 +26,6 @@ Un indicador de clima ligero y de aspecto nativo para la barra de tareas de Wind
 Windows 11 muestra el clima a través de su panel de **Widgets** — pero ese panel también trae un feed de noticias, titulares y contenido que no tiene nada que ver con consultar el clima.
 
 **ElevenWeather** reemplaza ese único botón por un indicador exclusivo del clima que se ubica exactamente en el mismo lugar de la barra de tareas. Sin feed, sin titulares, sin paneles adicionales — solo la temperatura actual y, a un clic de distancia, un pronóstico por hora y diario.
-
-> **Sin noticias. Sin feeds. Sin distracciones. Solo el clima.**
 
 ---
 
@@ -81,9 +77,10 @@ El clima es información de un vistazo: miras la barra de tareas, ves la tempera
 
 ## 🚀 Instalación
 
-1. Descarga el `ElevenWeather-vX.Y.Z-win-x64.zip` más reciente desde la [página de Releases](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
-2. Extráelo y ejecuta `ElevenWeather.exe` — es un único archivo autocontenido, sin necesidad de instalar .NET.
-3. En la primera ejecución, tu ubicación se detecta automáticamente; puedes cambiarla en cualquier momento desde el menú del flyout.
+1. Desactiva el botón **Widgets** de Windows — ElevenWeather ocupa el mismo lugar de la barra de tareas, por lo que ambos se superponen si los dos están activos. Ve a **Configuración → Personalización → Barra de tareas → Elementos de la barra de tareas** y pon **Widgets** en **Desactivado**.
+2. Descarga el `ElevenWeather-vX.Y.Z-win-x64.zip` más reciente desde la [página de Releases](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
+3. Extráelo y ejecuta `ElevenWeather.exe` — es un único archivo autocontenido, sin necesidad de instalar .NET.
+4. En la primera ejecución, tu ubicación se detecta automáticamente; puedes cambiarla en cualquier momento desde el menú del flyout.
 
 ¿Prefieres compilarlo tú mismo? Consulta [Compilar desde el código fuente](#-compilar-desde-el-código-fuente) más abajo.
 

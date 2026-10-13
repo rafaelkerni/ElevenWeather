@@ -1,14 +1,12 @@
 <div align="center">
 
-# ElevenWeather
-
-### Sem notícias. Sem feeds. Sem distrações. Só o tempo.
+# ⛅ ElevenWeather
 
 Um indicador de clima leve e com cara nativa para a barra de tarefas do Windows 11.
 
 <br>
 
-![ElevenWeather na barra de tarefas](assets/taskbar.png)
+![ElevenWeather — Sem distrações. Só o clima.](assets/banner-pt-BR.webp)
 
 <br>
 
@@ -28,8 +26,6 @@ Um indicador de clima leve e com cara nativa para a barra de tarefas do Windows 
 O Windows 11 mostra o clima através do painel de **Widgets** — mas esse painel também traz feed de notícias, manchetes e conteúdo que não tem nada a ver com consultar o tempo.
 
 O **ElevenWeather** substitui esse botão único por um indicador exclusivo de clima que fica exatamente no mesmo lugar na barra de tarefas. Sem feed, sem manchetes, sem painéis extras — só a temperatura atual e, a um clique de distância, a previsão horária e diária.
-
-> **Sem notícias. Sem feeds. Sem distrações. Só o tempo.**
 
 ---
 
@@ -81,9 +77,10 @@ Clima é uma informação de relance: você olha para a barra de tarefas, vê a 
 
 ## 🚀 Instalação
 
-1. Baixe o `ElevenWeather-vX.Y.Z-win-x64.zip` mais recente na [página de Releases](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
-2. Extraia o arquivo e execute `ElevenWeather.exe` — é um único arquivo autocontido, sem precisar instalar o .NET.
-3. Na primeira execução, sua localização é detectada automaticamente; você pode alterá-la a qualquer momento pelo menu do flyout.
+1. Desative o botão **Widgets** do Windows — o ElevenWeather ocupa o mesmo lugar da barra de tarefas, então os dois se sobrepõem se ambos estiverem ativos. Vá em **Configurações → Personalização → Barra de Tarefas → Itens da barra de tarefas** e coloque **Widgets** como **Desativado**.
+2. Baixe o `ElevenWeather-vX.Y.Z-win-x64.zip` mais recente na [página de Releases](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
+3. Extraia o arquivo e execute `ElevenWeather.exe` — é um único arquivo autocontido, sem precisar instalar o .NET.
+4. Na primeira execução, sua localização é detectada automaticamente; você pode alterá-la a qualquer momento pelo menu do flyout.
 
 Prefere compilar você mesmo? Veja [Compilando a partir do código-fonte](#-compilando-a-partir-do-código-fonte) abaixo.
 

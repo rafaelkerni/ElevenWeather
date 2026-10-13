@@ -1,14 +1,12 @@
 <div align="center">
 
-# ElevenWeather
-
-### No news. No feeds. No distractions. Just weather.
+# ⛅ ElevenWeather
 
 A lightweight, native-looking weather indicator for the Windows 11 taskbar.
 
 <br>
 
-![ElevenWeather on the taskbar](assets/taskbar.png)
+![ElevenWeather — No distractions. Just weather.](assets/banner-en.webp)
 
 <br>
 
@@ -28,8 +26,6 @@ A lightweight, native-looking weather indicator for the Windows 11 taskbar.
 Windows 11 shows the weather through its **Widgets** panel — but that panel also brings a news feed, headlines and content that has nothing to do with checking the weather.
 
 **ElevenWeather** replaces that single button with a weather-only indicator that lives in the exact same spot on the taskbar. No feed, no headlines, no extra panels — just the current temperature and, one click away, an hourly and daily forecast.
-
-> **No news. No feeds. No distractions. Just weather.**
 
 ---
 
@@ -81,9 +77,10 @@ Weather is glanceable information: you look at the taskbar, you see the temperat
 
 ## 🚀 Installation
 
-1. Download the latest `ElevenWeather-vX.Y.Z-win-x64.zip` from the [Releases page](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
-2. Extract it and run `ElevenWeather.exe` — it's a single self-contained file, no .NET install needed.
-3. On first run, your location is detected automatically; you can change it any time from the flyout's menu.
+1. Turn off the Windows **Widgets** button — ElevenWeather sits in the same spot of the taskbar, so the two overlap if both are enabled. Go to **Settings → Personalization → Taskbar → Taskbar items** and switch **Widgets** to **Off**.
+2. Download the latest `ElevenWeather-vX.Y.Z-win-x64.zip` from the [Releases page](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
+3. Extract it and run `ElevenWeather.exe` — it's a single self-contained file, no .NET install needed.
+4. On first run, your location is detected automatically; you can change it any time from the flyout's menu.
 
 Prefer to build it yourself? See [Building from source](#-building-from-source) below.
 
