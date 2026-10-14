@@ -401,4 +401,50 @@ public sealed class FlyoutViewModelTests : PreferenceScope
     {
         Assert.Equal(expected, FlyoutViewModel.BuildForecastUrl(language));
     }
+
+    [Fact]
+    public void Version_WithoutUpdateService_IsInformativeOnly()
+    {
+        Assert.StartsWith("Version ", _vm.VersionText);
+        Assert.False(_vm.CanCheckForUpdates);
+        Assert.Null(_vm.VersionTooltip);
+    }
+
+    [Theory]
+    [InlineData(UpdateResult.UpToDate, false)]
+    [InlineData(UpdateResult.Installed, false)]
+    [InlineData(UpdateResult.Failed, true)]
+    public void CheckForUpdates_ReportsResult(UpdateResult result, bool expectedFailed)
+    {
+        var updates = new FakeUpdateService { Result = result };
+        var vm = new FlyoutViewModel(_store, _searchService, new FakeUiTimer(), _msnIcons, updates);
+        (string Message, bool Failed)? reported = null;
+        vm.UpdateCheckCompleted += (message, failed) => reported = (message, failed);
+
+        vm.CheckForUpdatesCommand.Execute(null);
+
+        Assert.Equal(1, updates.Calls);
+        Assert.NotNull(reported);
+        Assert.False(string.IsNullOrEmpty(reported.Value.Message));
+        Assert.Equal(expectedFailed, reported.Value.Failed);
+        Assert.True(vm.CanCheckForUpdates);
+    }
+
+    [Fact]
+    public void CheckForUpdates_WhileRunning_ShowsProgressAndIgnoresNewClicks()
+    {
+        var updates = new FakeUpdateService { Gate = new TaskCompletionSource() };
+        var vm = new FlyoutViewModel(_store, _searchService, new FakeUiTimer(), _msnIcons, updates);
+
+        vm.CheckForUpdatesCommand.Execute(null);
+
+        Assert.False(vm.CanCheckForUpdates);
+        Assert.Equal("Checking for updates…", vm.VersionText);
+        vm.CheckForUpdatesCommand.Execute(null);
+        Assert.Equal(1, updates.Calls);
+
+        updates.Gate.SetResult();
+        Assert.True(vm.CanCheckForUpdates);
+        Assert.StartsWith("Version ", vm.VersionText);
+    }
 }

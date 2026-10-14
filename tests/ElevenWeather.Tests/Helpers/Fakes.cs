@@ -146,3 +146,17 @@ public sealed class FakeMsnIconInstaller : IMsnIconInstaller
         return Task.FromResult(Result);
     }
 }
+
+public sealed class FakeUpdateService : IUpdateService
+{
+    public UpdateResult Result { get; set; } = UpdateResult.UpToDate;
+    public TaskCompletionSource? Gate { get; set; }
+    public int Calls { get; private set; }
+
+    public async Task<UpdateResult> TryUpdateAsync(CancellationToken ct = default)
+    {
+        Calls++;
+        if (Gate is not null) await Gate.Task;
+        return Result;
+    }
+}
