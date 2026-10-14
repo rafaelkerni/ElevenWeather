@@ -16,6 +16,7 @@ public partial class App
     private Mutex? _singleInstanceMutex;
     private bool _ownsSingleInstanceMutex;
     private HttpClient? _httpClient;
+    private HttpClient? _updateHttpClient;
     private TaskbarTracker? _tracker;
     private WeatherStore? _weatherStore;
     private WidgetViewModel? _widgetViewModel;
@@ -70,6 +71,37 @@ public partial class App
 
         // Espera o widget aparecer na barra para o aviso fazer sentido visualmente.
         Dispatcher.BeginInvoke(new Action(MaybeShowWidgetsPrompt), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+
+#if !DEBUG
+        StartAutoUpdate();
+#endif
+    }
+
+    /// <summary>Checa por novas versões pouco depois de iniciar e periodicamente; a troca vale na próxima inicialização.</summary>
+    private void StartAutoUpdate()
+    {
+        var exePath = Environment.ProcessPath;
+        var version = typeof(App).Assembly.GetName().Version;
+        if (exePath is null || version is null) return;
+
+        // Cliente próprio: o download do exe não cabe no timeout curto usado pelas APIs de clima
+        _updateHttpClient = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
+        _updateHttpClient.DefaultRequestHeaders.UserAgent.ParseAdd("ElevenWeather/1.0 (+https://github.com/rafaelkerni/ElevenWeather)");
+        var updateService = new UpdateService(_updateHttpClient, version, exePath);
+        updateService.CleanupPreviousUpdate();
+
+        var timer = new DispatcherUiTimer { Interval = TimeSpan.FromMinutes(1) };
+        bool running = false;
+        timer.Tick += async () =>
+        {
+            if (running) return;
+            running = true;
+            timer.Interval = TimeSpan.FromHours(12);
+            if (await updateService.TryUpdateAsync() == UpdateResult.Installed)
+                timer.Stop();
+            running = false;
+        };
+        timer.Start();
     }
 
     /// <summary>
@@ -199,6 +231,7 @@ public partial class App
     {
         _tracker?.Dispose();
         _httpClient?.Dispose();
+        _updateHttpClient?.Dispose();
 
         if (_singleInstanceMutex is not null)
         {

@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
 jobs:
   build:
     runs-on: windows-latest
@@ -13,10 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      # Usa o SDK que já vem na imagem do runner (compila net8.0); instalar o 8.0.x baixava ~285 MB a cada execução
+      - name: Show .NET SDK
+        run: dotnet --version
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
         with:
-          dotnet-version: 8.0.x
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
 
       - name: Restore
         run: dotnet restore

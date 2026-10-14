@@ -7,6 +7,10 @@ on:
 permissions:
   contents: write
 
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
 jobs:
   release:
     runs-on: windows-latest
@@ -46,10 +50,16 @@ jobs:
           # O código 1 do gh (release inexistente) é o caso esperado, não uma falha do passo
           exit 0
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      # Usa o SDK que já vem na imagem do runner (compila net8.0); instalar o 8.0.x baixava ~285 MB a cada execução
+      - name: Show .NET SDK
+        run: dotnet --version
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
         with:
-          dotnet-version: 8.0.x
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
 
       - name: Test
         run: dotnet test --configuration Release --verbosity normal
@@ -66,9 +76,13 @@ jobs:
           -p:DebugType=None
           --output publish
 
-      - name: Package
+      # Nome fixo, sem versão: o auto-update substitui o arquivo no lugar e o link releases/latest/download não muda
+      - name: Compute hash
         shell: pwsh
-        run: Compress-Archive -Path publish/ElevenWeather.exe -DestinationPath "ElevenWeather-v${{ steps.version.outputs.version }}-win-x64.zip"
+        run: |
+          # Hash usado pelo auto-update para validar o download (formato do sha256sum)
+          $hash = (Get-FileHash publish/ElevenWeather.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  ElevenWeather.exe" | Out-File -FilePath publish/ElevenWeather.exe.sha256 -Encoding ascii -NoNewline
 
       - name: Create release
         shell: pwsh
@@ -76,7 +90,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: >
           gh release create "v${{ steps.version.outputs.version }}"
-          "ElevenWeather-v${{ steps.version.outputs.version }}-win-x64.zip"
+          publish/ElevenWeather.exe
+          publish/ElevenWeather.exe.sha256
           --target ${{ github.sha }}
           --title "v${{ steps.version.outputs.version }}"
           --generate-notes
