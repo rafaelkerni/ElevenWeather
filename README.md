@@ -14,6 +14,7 @@ A lightweight, native-looking weather indicator for the Windows 11 taskbar.
 [![.NET 8](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet&logoColor=white)](#)
 [![Build](https://github.com/rafaelkerni/ElevenWeather/actions/workflows/build.yml/badge.svg)](https://github.com/rafaelkerni/ElevenWeather/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/rafaelkerni)
 
 **English | [Português](README.pt-BR.md) | [Español](README.es.md)**
 
@@ -237,6 +238,14 @@ Then open a Pull Request. For larger changes, opening an issue first to discuss 
 ## 🐛 Reporting bugs
 
 Please open an issue with: what happened, what you expected, steps to reproduce, your Windows version, and a screenshot if relevant.
+
+---
+
+## 💖 Supporting the project
+
+ElevenWeather is free and open source, with no ads and no telemetry. If it's useful to you and you'd like to support its development, you can do so through **[GitHub Sponsors](https://github.com/sponsors/rafaelkerni)** — any amount helps, and it's entirely optional.
+
+Starring the repository, reporting bugs and sharing the app with others are great ways to help too.
 
 ---
 

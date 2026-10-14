@@ -14,6 +14,7 @@ Um indicador de clima leve e com cara nativa para a barra de tarefas do Windows 
 [![.NET 8](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet&logoColor=white)](#)
 [![Build](https://github.com/rafaelkerni/ElevenWeather/actions/workflows/build.yml/badge.svg)](https://github.com/rafaelkerni/ElevenWeather/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/rafaelkerni)
 
 **[English](README.md) | Português | [Español](README.es.md)**
 
@@ -237,6 +238,14 @@ Depois abra um Pull Request. Para mudanças maiores, é uma boa ideia abrir uma 
 ## 🐛 Reportando bugs
 
 Abra uma issue com: o que aconteceu, o que você esperava, passos para reproduzir, sua versão do Windows e uma captura de tela, se relevante.
+
+---
+
+## 💖 Apoie o projeto
+
+O ElevenWeather é gratuito e open source, sem anúncios e sem telemetria. Se ele é útil para você e quiser apoiar o desenvolvimento, você pode fazer isso pelo **[GitHub Sponsors](https://github.com/sponsors/rafaelkerni)** — qualquer valor ajuda, e é totalmente opcional.
+
+Dar uma estrela no repositório, reportar bugs e indicar o app para outras pessoas também são ótimas formas de ajudar.
 
 ---
 
