@@ -79,8 +79,8 @@ Clima é uma informação de relance: você olha para a barra de tarefas, vê a 
 ## 🚀 Instalação
 
 1. Desative o botão **Widgets** do Windows — o ElevenWeather ocupa o mesmo lugar da barra de tarefas, então os dois se sobrepõem se ambos estiverem ativos. Vá em **Configurações → Personalização → Barra de Tarefas → Itens da barra de tarefas** e coloque **Widgets** como **Desativado**.
-2. Baixe o `ElevenWeather-vX.Y.Z-win-x64.zip` mais recente na [página de Releases](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
-3. Extraia o arquivo e execute `ElevenWeather.exe` — é um único arquivo autocontido, sem precisar instalar o .NET.
+2. Baixe o [`ElevenWeather.exe`](https://github.com/rafaelkerni/ElevenWeather/releases/latest/download/ElevenWeather.exe) da release mais recente.
+3. Execute-o — é um único arquivo autocontido, sem precisar instalar o .NET. Novas versões são baixadas automaticamente em segundo plano e aplicadas na próxima vez que o app iniciar.
 4. Na primeira execução, sua localização é detectada automaticamente; você pode alterá-la a qualquer momento pelo menu do flyout.
 
 Prefere compilar você mesmo? Veja [Compilando a partir do código-fonte](#-compilando-a-partir-do-código-fonte) abaixo.
