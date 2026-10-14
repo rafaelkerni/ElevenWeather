@@ -303,6 +303,17 @@ public sealed class WeatherStoreTests : PreferenceScope
     }
 
     [Fact]
+    public void DismissWidgetsPrompt_PersistsChoice()
+    {
+        var (store, fakes) = TestData.CreateStore();
+
+        store.DismissWidgetsPrompt();
+
+        Assert.True(store.Settings.WidgetsPromptDismissed);
+        Assert.Equal(1, fakes.Settings.SaveCount);
+    }
+
+    [Fact]
     public void SyncAutoStart_ReappliesOnlyAfterUserAnswered()
     {
         var (notAsked, notAskedFakes) = TestData.CreateStore(new AppSettings { AutoStart = true, AutoStartPromptShown = false });

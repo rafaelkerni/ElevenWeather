@@ -77,6 +77,46 @@ public sealed class RegistryServicesTests : IDisposable
         Assert.True(SystemThemeWatcher.IsLightTheme(_keyPath));
     }
 
+    [Theory]
+    [InlineData(1, true)]
+    [InlineData(0, false)]
+    public void Widgets_ReadsTaskbarDa(int value, bool expectedEnabled)
+    {
+        using (var key = Registry.CurrentUser.CreateSubKey(_keyPath))
+            key.SetValue("TaskbarDa", value, RegistryValueKind.DWord);
+
+        Assert.Equal(expectedEnabled, WindowsWidgetsDetector.IsWidgetsButtonEnabled(_keyPath));
+    }
+
+    [Fact]
+    public void Widgets_DefaultsToEnabledWhenValueIsMissing()
+    {
+        Assert.True(WindowsWidgetsDetector.IsWidgetsButtonEnabled(_keyPath));
+    }
+
+    [Theory]
+    [InlineData(0, true)]
+    [InlineData(1, false)]
+    public void Widgets_PolicyDisablesWhenAllowNewsAndInterestsIsZero(int value, bool expectedDisabled)
+    {
+        using (var key = Registry.CurrentUser.CreateSubKey(_keyPath))
+            key.SetValue("AllowNewsAndInterests", value, RegistryValueKind.DWord);
+
+        Assert.Equal(expectedDisabled, WindowsWidgetsDetector.IsDisabledByPolicy(Registry.CurrentUser, _keyPath));
+    }
+
+    [Fact]
+    public void Widgets_NoPolicyMeansNotDisabled()
+    {
+        Assert.False(WindowsWidgetsDetector.IsDisabledByPolicy(Registry.CurrentUser, _keyPath));
+    }
+
+    [Fact]
+    public void Widgets_RealKeyReadDoesNotThrow()
+    {
+        Assert.Null(Record.Exception(() => WindowsWidgetsDetector.IsWidgetsButtonEnabled()));
+    }
+
     [Fact]
     public void Theme_RealKeyReadDoesNotThrow()
     {

@@ -7,6 +7,7 @@ public sealed class AppSettings
     public string? CityName { get; set; }
     public bool AutoStart { get; set; }
     public bool AutoStartPromptShown { get; set; }
+    public bool WidgetsPromptDismissed { get; set; }
 
     /// <summary>Null until the user picks one manually — in that case Windows' language decides.</summary>
     public AppLanguage? Language { get; set; }

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -68,6 +69,9 @@ public partial class App
 
         _ = _weatherStore.InitializeAsync();
 
+        // Espera o widget aparecer na barra para o aviso fazer sentido visualmente.
+        Dispatcher.BeginInvoke(new Action(MaybeShowWidgetsPrompt), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+
 #if !DEBUG
         StartAutoUpdate();
 #endif
@@ -80,7 +84,7 @@ public partial class App
         var version = typeof(App).Assembly.GetName().Version;
         if (exePath is null || version is null) return;
 
-        // Cliente próprio: o download do zip não cabe no timeout curto usado pelas APIs de clima
+        // Cliente próprio: o download do exe não cabe no timeout curto usado pelas APIs de clima
         _updateHttpClient = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
         _updateHttpClient.DefaultRequestHeaders.UserAgent.ParseAdd("ElevenWeather/1.0 (+https://github.com/rafaelkerni/ElevenWeather)");
         var updateService = new UpdateService(_updateHttpClient, version, exePath);
@@ -98,6 +102,37 @@ public partial class App
             running = false;
         };
         timer.Start();
+    }
+
+    /// <summary>
+    /// Avisa quando o botão Widgets do Windows está ativo, já que ele se sobrepõe ao ElevenWeather.
+    /// O app não consegue desativá-lo sozinho, então só oferece abrir a tela de configurações.
+    /// </summary>
+    private void MaybeShowWidgetsPrompt()
+    {
+        if (_weatherStore is null || _weatherStore.Settings.WidgetsPromptDismissed) return;
+        if (!WindowsWidgetsDetector.IsWidgetsButtonEnabled()) return;
+
+        bool openSettings = System.Windows.MessageBox.Show(
+            AppLocalization.Get("prompt.widgetsMessage"),
+            AppLocalization.Get("prompt.widgetsTitle"),
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Information) == MessageBoxResult.Yes;
+
+        if (!openSettings)
+        {
+            _weatherStore.DismissWidgetsPrompt();
+            return;
+        }
+
+        try
+        {
+            Process.Start(new ProcessStartInfo(WindowsWidgetsDetector.TaskbarSettingsUri) { UseShellExecute = true });
+        }
+        catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException)
+        {
+            // Sem como abrir as configurações: o aviso volta na próxima inicialização.
+        }
     }
 
     /// <summary>
