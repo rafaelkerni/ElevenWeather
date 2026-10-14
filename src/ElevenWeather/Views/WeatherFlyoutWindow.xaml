@@ -180,6 +180,9 @@
                                           ToolTip="{Binding MsnIconSetTooltip}"/>
                             </MenuItem>
                             <Separator/>
+                            <MenuItem Header="{Binding VersionText}" ToolTip="{Binding VersionTooltip}"
+                                      IsEnabled="{Binding CanCheckForUpdates}"
+                                      Command="{Binding CheckForUpdatesCommand}"/>
                             <MenuItem Header="{Binding Source={x:Static loc:AppLocalization.Instance}, Path=[menu.exit]}"
                                       Command="{Binding ExitCommand}"/>
                         </ContextMenu>

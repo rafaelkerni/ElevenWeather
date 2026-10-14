@@ -24,6 +24,8 @@ public sealed class FlyoutViewModel : ObservableObject
     private readonly WeatherStore _store;
     private readonly ILocationService _locationService;
     private readonly IMsnIconInstaller _msnIcons;
+    private readonly IUpdateService? _updates;
+    private bool _isCheckingForUpdates;
 
     private const int RowsPerPage = 5;
 
@@ -35,11 +37,13 @@ public sealed class FlyoutViewModel : ObservableObject
     private ForecastTab _selectedTab = ForecastTab.Hourly;
     private int _currentPage;
 
-    public FlyoutViewModel(WeatherStore store, ILocationService locationService, IUiTimer citySearchDebounceTimer, IMsnIconInstaller msnIcons)
+    public FlyoutViewModel(WeatherStore store, ILocationService locationService, IUiTimer citySearchDebounceTimer,
+                           IMsnIconInstaller msnIcons, IUpdateService? updates = null)
     {
         _store = store;
         _locationService = locationService;
         _msnIcons = msnIcons;
+        _updates = updates;
         _store.Updated += OnStoreUpdated;
         AppLocalization.Instance.LanguageChanged += OnLanguageChanged;
 
@@ -55,6 +59,7 @@ public sealed class FlyoutViewModel : ObservableObject
         OpenForecastCommand = new RelayCommand(OpenForecastInBrowser);
         ToggleLocationPanelCommand = new RelayCommand(() => IsLocationPanelOpen = !IsLocationPanelOpen);
         SearchCityCommand = new RelayCommand(async () => await SearchCityAsync());
+        CheckForUpdatesCommand = new RelayCommand(async () => await CheckForUpdatesAsync());
         ExitCommand = new RelayCommand(() => System.Windows.Application.Current.Shutdown());
     }
 
@@ -247,6 +252,49 @@ public sealed class FlyoutViewModel : ObservableObject
     /// <summary>Fired with a localized message when the MSN icons can't be copied from the Bing Weather app.</summary>
     public event Action<string>? MsnIconInstallFailed;
 
+    public string VersionText
+    {
+        get
+        {
+            if (_isCheckingForUpdates) return AppLocalization.Get("menu.checkingForUpdates");
+            var v = typeof(FlyoutViewModel).Assembly.GetName().Version;
+            return string.Format(AppLocalization.Get("menu.version"), v is null ? "?" : $"{v.Major}.{v.Minor}.{Math.Max(v.Build, 0)}");
+        }
+    }
+
+    public string? VersionTooltip => CanCheckForUpdates ? AppLocalization.Get("menu.checkForUpdates") : null;
+
+    /// <summary>Sem serviço de atualização (build de debug) o item da versão fica só informativo.</summary>
+    public bool CanCheckForUpdates => _updates is not null && !_isCheckingForUpdates;
+
+    /// <summary>Fired with a localized message describing the result of a manual update check.</summary>
+    public event Action<string, bool>? UpdateCheckCompleted;
+
+    private async Task CheckForUpdatesAsync()
+    {
+        if (!CanCheckForUpdates) return;
+
+        SetCheckingForUpdates(true);
+        var result = await _updates!.TryUpdateAsync();
+        SetCheckingForUpdates(false);
+
+        var key = result switch
+        {
+            UpdateResult.UpToDate => "update.upToDate",
+            UpdateResult.Installed => "update.installed",
+            _ => "update.failed",
+        };
+        UpdateCheckCompleted?.Invoke(AppLocalization.Get(key), result == UpdateResult.Failed);
+    }
+
+    private void SetCheckingForUpdates(bool value)
+    {
+        _isCheckingForUpdates = value;
+        OnPropertyChanged(nameof(VersionText));
+        OnPropertyChanged(nameof(VersionTooltip));
+        OnPropertyChanged(nameof(CanCheckForUpdates));
+    }
+
     /// <summary>The MSN icons aren't bundled; the first selection copies them from the installed Bing Weather app.</summary>
     public string? MsnIconSetTooltip => _msnIcons.IsInstalled ? null : AppLocalization.Get("iconSet.msnUnavailableHint");
 
@@ -283,6 +331,8 @@ public sealed class FlyoutViewModel : ObservableObject
     public ICommand OpenForecastCommand { get; }
     public ICommand ToggleLocationPanelCommand { get; }
     public ICommand SearchCityCommand { get; }
+    public ICommand CheckForUpdatesCommand { get; }
+
     public ICommand ExitCommand { get; }
 
     public async Task SelectCityAsync(GeocodingResult city)
@@ -397,6 +447,8 @@ public sealed class FlyoutViewModel : ObservableObject
         OnPropertyChanged(nameof(IsEnglish));
         OnPropertyChanged(nameof(IsSpanish));
         OnPropertyChanged(nameof(MsnIconSetTooltip));
+        OnPropertyChanged(nameof(VersionText));
+        OnPropertyChanged(nameof(VersionTooltip));
         NotifyForecastChanged();
     }
 }

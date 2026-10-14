@@ -25,6 +25,8 @@ public partial class WeatherFlyoutWindow : Window
         DataContext = _viewModel;
         _viewModel.MsnIconInstallFailed += message => System.Windows.MessageBox.Show(
             message, "ElevenWeather", MessageBoxButton.OK, MessageBoxImage.Warning);
+        _viewModel.UpdateCheckCompleted += (message, failed) => System.Windows.MessageBox.Show(
+            message, "ElevenWeather", MessageBoxButton.OK, failed ? MessageBoxImage.Warning : MessageBoxImage.Information);
 
         Loaded += (_, _) => UpdatePosition();
         SizeChanged += (_, _) => UpdatePosition();

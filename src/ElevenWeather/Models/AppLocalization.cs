@@ -82,12 +82,33 @@ public sealed class AppLocalization : INotifyPropertyChanged
             "El botón Widgets de Windows está activado y ocupa el mismo lugar de la barra de tareas que ElevenWeather, por lo que ambos se superponen.\n\n¿Quieres abrir la configuración de la barra de tareas para desactivarlo?\n\nSi eliges \"No\", este aviso no volverá a aparecer.",
         },
 
-        ["menu.refresh"] = new[] { "Atualizar agora", "Refresh now", "Actualizar ahora" },
+        ["menu.refresh"] = new[] { "Atualizar clima", "Refresh weather", "Actualizar clima" },
         ["menu.startWithWindows"] = new[] { "Iniciar com o Windows", "Start with Windows", "Iniciar con Windows" },
         ["menu.language"] = new[] { "Idioma", "Language", "Idioma" },
         ["menu.temperatureUnit"] = new[] { "Unidade", "Unit", "Unidad" },
         ["menu.timeFormat"] = new[] { "Formato de hora", "Time format", "Formato de hora" },
         ["menu.iconSet"] = new[] { "Ícones", "Icons", "Iconos" },
+        ["menu.version"] = new[] { "Versão {0}", "Version {0}", "Versión {0}" },
+        ["menu.checkForUpdates"] = new[] { "Clique para procurar atualizações", "Click to check for updates", "Haz clic para buscar actualizaciones" },
+        ["menu.checkingForUpdates"] = new[] { "Procurando atualizações…", "Checking for updates…", "Buscando actualizaciones…" },
+        ["update.upToDate"] = new[]
+        {
+            "Você já está usando a versão mais recente do ElevenWeather.",
+            "You're already running the latest version of ElevenWeather.",
+            "Ya estás usando la versión más reciente de ElevenWeather.",
+        },
+        ["update.installed"] = new[]
+        {
+            "Uma nova versão foi instalada e será usada na próxima vez que o ElevenWeather iniciar.",
+            "A new version has been installed and will be used the next time ElevenWeather starts.",
+            "Se instaló una nueva versión que se usará la próxima vez que se inicie ElevenWeather.",
+        },
+        ["update.failed"] = new[]
+        {
+            "Não foi possível procurar atualizações. Verifique sua conexão e tente novamente.",
+            "Couldn't check for updates. Check your connection and try again.",
+            "No se pudieron buscar actualizaciones. Verifica tu conexión e inténtalo de nuevo.",
+        },
         ["menu.exit"] = new[] { "Sair", "Exit", "Salir" },
 
         ["iconSet.msnUnavailableHint"] = new[]

@@ -68,3 +68,10 @@ public sealed record MsnIconInstallResult(MsnIconInstallStatus Status, string? P
 {
     public bool Succeeded => Status == MsnIconInstallStatus.Success;
 }
+
+/// <summary>Atualização do próprio app via GitHub Releases.</summary>
+public interface IUpdateService
+{
+    /// <summary>Baixa e instala a versão mais nova, se houver; ela passa a valer na próxima inicialização.</summary>
+    Task<UpdateResult> TryUpdateAsync(CancellationToken ct = default);
+}

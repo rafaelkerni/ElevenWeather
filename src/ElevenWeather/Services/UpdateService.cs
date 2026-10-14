@@ -16,7 +16,7 @@ public enum UpdateResult
 /// Atualização silenciosa via GitHub Releases: baixa o exe da versão mais nova, confere o SHA-256
 /// publicado junto e troca o exe em disco. O processo atual segue rodando; a nova versão vale na próxima inicialização.
 /// </summary>
-public sealed class UpdateService
+public sealed class UpdateService : IUpdateService
 {
     public const string DefaultLatestReleaseUrl = "https://api.github.com/repos/rafaelkerni/ElevenWeather/releases/latest";
 
@@ -27,6 +27,8 @@ public sealed class UpdateService
     private readonly Version _currentVersion;
     private readonly string _exePath;
     private readonly string _latestReleaseUrl;
+    private readonly SemaphoreSlim _gate = new(1, 1);
+    private bool _installed;
 
     /// <param name="exePath">Exe a ser substituído; configurável para os testes usarem uma pasta temporária.</param>
     public UpdateService(HttpClient http, Version currentVersion, string exePath, string latestReleaseUrl = DefaultLatestReleaseUrl)
@@ -49,6 +51,23 @@ public sealed class UpdateService
     }
 
     public async Task<UpdateResult> TryUpdateAsync(CancellationToken ct = default)
+    {
+        // Checagem manual e periódica podem coincidir; e após instalar, o exe em execução já virou .old
+        await _gate.WaitAsync(ct);
+        try
+        {
+            if (_installed) return UpdateResult.Installed;
+            var result = await TryUpdateCoreAsync(ct);
+            _installed = result == UpdateResult.Installed;
+            return result;
+        }
+        finally
+        {
+            _gate.Release();
+        }
+    }
+
+    private async Task<UpdateResult> TryUpdateCoreAsync(CancellationToken ct)
     {
         try
         {

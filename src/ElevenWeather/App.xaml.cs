@@ -53,7 +53,12 @@ public partial class App
 
         _widgetViewModel = new WidgetViewModel(_weatherStore);
 
-        var flyoutViewModel = new FlyoutViewModel(_weatherStore, locationService, new DispatcherUiTimer(), new MsnIconInstaller());
+        UpdateService? updateService = null;
+#if !DEBUG
+        updateService = StartAutoUpdate();
+#endif
+
+        var flyoutViewModel = new FlyoutViewModel(_weatherStore, locationService, new DispatcherUiTimer(), new MsnIconInstaller(), updateService);
         _flyoutWindow = new WeatherFlyoutWindow(flyoutViewModel);
         _flyoutWindow.FlyoutHidden += () =>
         {
@@ -71,18 +76,14 @@ public partial class App
 
         // Espera o widget aparecer na barra para o aviso fazer sentido visualmente.
         Dispatcher.BeginInvoke(new Action(MaybeShowWidgetsPrompt), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
-
-#if !DEBUG
-        StartAutoUpdate();
-#endif
     }
 
     /// <summary>Checa por novas versões pouco depois de iniciar e periodicamente; a troca vale na próxima inicialização.</summary>
-    private void StartAutoUpdate()
+    private UpdateService? StartAutoUpdate()
     {
         var exePath = Environment.ProcessPath;
         var version = typeof(App).Assembly.GetName().Version;
-        if (exePath is null || version is null) return;
+        if (exePath is null || version is null) return null;
 
         // Cliente próprio: o download do exe não cabe no timeout curto usado pelas APIs de clima
         _updateHttpClient = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
@@ -102,6 +103,7 @@ public partial class App
             running = false;
         };
         timer.Start();
+        return updateService;
     }
 
     /// <summary>
