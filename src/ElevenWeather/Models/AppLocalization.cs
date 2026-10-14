@@ -74,6 +74,14 @@ public sealed class AppLocalization : INotifyPropertyChanged
             "¿Quieres que ElevenWeather se inicie automáticamente con Windows? Puedes cambiar esto en cualquier momento desde el menú del widget.",
         },
 
+        ["prompt.widgetsTitle"] = new[] { "Widgets do Windows ativos", "Windows Widgets enabled", "Widgets de Windows activados" },
+        ["prompt.widgetsMessage"] = new[]
+        {
+            "O botão Widgets do Windows está ativo e ocupa o mesmo lugar do ElevenWeather na barra de tarefas, então os dois se sobrepõem.\n\nDeseja abrir as configurações da barra de tarefas para desativá-lo?\n\nSe escolher \"Não\", este aviso não aparecerá novamente.",
+            "The Windows Widgets button is enabled and sits in the same spot of the taskbar as ElevenWeather, so the two overlap.\n\nWould you like to open the taskbar settings to turn it off?\n\nIf you choose \"No\", this message won't be shown again.",
+            "El botón Widgets de Windows está activado y ocupa el mismo lugar de la barra de tareas que ElevenWeather, por lo que ambos se superponen.\n\n¿Quieres abrir la configuración de la barra de tareas para desactivarlo?\n\nSi eliges \"No\", este aviso no volverá a aparecer.",
+        },
+
         ["menu.refresh"] = new[] { "Atualizar agora", "Refresh now", "Actualizar ahora" },
         ["menu.startWithWindows"] = new[] { "Iniciar com o Windows", "Start with Windows", "Iniciar con Windows" },
         ["menu.language"] = new[] { "Idioma", "Language", "Idioma" },

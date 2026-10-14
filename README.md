@@ -78,7 +78,7 @@ Weather is glanceable information: you look at the taskbar, you see the temperat
 
 ## 🚀 Installation
 
-1. Turn off the Windows **Widgets** button — ElevenWeather sits in the same spot of the taskbar, so the two overlap if both are enabled. Go to **Settings → Personalization → Taskbar → Taskbar items** and switch **Widgets** to **Off**.
+1. Turn off the Windows **Widgets** button — ElevenWeather sits in the same spot of the taskbar, so the two overlap if both are enabled. Go to **Settings → Personalization → Taskbar → Taskbar items** and switch **Widgets** to **Off**. If you forget, ElevenWeather detects it on startup and offers to open that screen for you.
 2. Download the latest `ElevenWeather-vX.Y.Z-win-x64.zip` from the [Releases page](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
 3. Extract it and run `ElevenWeather.exe` — it's a single self-contained file, no .NET install needed.
 4. On first run, your location is detected automatically; you can change it any time from the flyout's menu.

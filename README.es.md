@@ -78,7 +78,7 @@ El clima es información de un vistazo: miras la barra de tareas, ves la tempera
 
 ## 🚀 Instalación
 
-1. Desactiva el botón **Widgets** de Windows — ElevenWeather ocupa el mismo lugar de la barra de tareas, por lo que ambos se superponen si los dos están activos. Ve a **Configuración → Personalización → Barra de tareas → Elementos de la barra de tareas** y pon **Widgets** en **Desactivado**.
+1. Desactiva el botón **Widgets** de Windows — ElevenWeather ocupa el mismo lugar de la barra de tareas, por lo que ambos se superponen si los dos están activos. Ve a **Configuración → Personalización → Barra de tareas → Elementos de la barra de tareas** y pon **Widgets** en **Desactivado**. Si lo olvidas, ElevenWeather lo detecta al iniciar y te ofrece abrir esa pantalla.
 2. Descarga el `ElevenWeather-vX.Y.Z-win-x64.zip` más reciente desde la [página de Releases](https://github.com/rafaelkerni/ElevenWeather/releases/latest).
 3. Extráelo y ejecuta `ElevenWeather.exe` — es un único archivo autocontenido, sin necesidad de instalar .NET.
 4. En la primera ejecución, tu ubicación se detecta automáticamente; puedes cambiarla en cualquier momento desde el menú del flyout.

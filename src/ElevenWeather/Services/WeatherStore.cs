@@ -149,6 +149,13 @@ public sealed class WeatherStore
         _autoStartService.SetEnabled(enabled);
     }
 
+    /// <summary>Records that the user declined the "turn off Windows Widgets" prompt, so it isn't shown again.</summary>
+    public void DismissWidgetsPrompt()
+    {
+        Settings.WidgetsPromptDismissed = true;
+        _settingsService.Save(Settings);
+    }
+
     public void SetLanguage(AppLanguage language)
     {
         Settings.Language = language;
